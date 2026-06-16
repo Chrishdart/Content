@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content Calendar - Abril 2026</title>
+    <title>Content Calendar - Plan Mensual 2026</title>
     <style>
         :root {
             --bg-main: #FAF7F2;
@@ -16,10 +16,10 @@
             --p4-pink: #F5C6DC;   /* Carrucel */
             --p5-blue: #B7DCF0;   /* Motion */
 
-            /* Colores de Estado Personalizados */
-            --status-proceso: #fbc19e;    /* En proceso */
-            --status-completado: #c3ecc1; /* Completado */
-            --status-incompleto: #ffbdbd; /* Incompleto */
+            /* Colores de Estado Solicitados */
+            --status-proceso: #ffbd7d;    /* En proceso */
+            --status-completado: #ade1ad; /* Completado */
+            --status-incompleto: #f194ac; /* Incompleto */
         }
 
         * {
@@ -32,16 +32,40 @@
         body {
             background-color: var(--bg-main);
             color: var(--text-main);
-            padding: 40px;
+            padding: 40px 20px;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .calendar-container {
+        /* CONTENEDOR PRINCIPAL DEL SLIDER */
+        .slider-container {
             width: 100%;
             max-width: 1400px;
-            background-color: var(--bg-main);
+            overflow: hidden;
+            position: relative;
+            padding-bottom: 50px;
+            cursor: grab;
+        }
+
+        .slider-container:active {
+            cursor: grabbing;
+        }
+
+        /* CONTENEDOR DESLIZANTE DE LAS 4 TABLAS */
+        .slides-wrapper {
+            display: flex;
+            width: 400%; /* 4 Semanas = 400% */
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* ESTRUCTURA INDIVIDUAL DE CADA SEMANA */
+        .slide {
+            width: 25%; /* 100% / 4 slides */
+            flex-shrink: 0;
+            padding: 0 10px;
+            user-select: none;
         }
 
         /* HEADER LAYOUT */
@@ -49,7 +73,8 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
+            gap: 20px;
         }
 
         .header-left {
@@ -99,7 +124,7 @@
         .header-right {
             display: grid;
             grid-template-columns: repeat(3, auto);
-            gap: 40px;
+            gap: 30px;
             font-size: 0.85rem;
             background: rgba(255,255,255,0.4);
             padding: 20px;
@@ -152,14 +177,22 @@
             color: #111111;
         }
 
+        /* SOPORTE RESPONSIVO PARA TABLAS ANCHAS */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
         /* GRID / TABLE STYLE */
         .calendar-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
             table-layout: fixed;
             background: #FFFFFF;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            min-width: 800px; /* Evita que la tabla se colapse de forma ilegible en móviles */
         }
 
         .calendar-table th, .calendar-table td {
@@ -169,11 +202,11 @@
         }
 
         /* Configuración de anchos de columnas */
-        .calendar-table th:nth-child(1) { width: 12%; } /* Día */
-        .calendar-table th:nth-child(2) { width: 10%; } /* Fecha */
-        .calendar-table th:nth-child(3) { width: 48%; } /* Enfoque */
-        .calendar-table th:nth-child(4) { width: 15%; } /* Estado */
-        .calendar-table th:nth-child(5) { width: 15%; } /* Formato */
+        .calendar-table th:nth-child(1) { width: 12%; } 
+        .calendar-table th:nth-child(2) { width: 10%; } 
+        .calendar-table th:nth-child(3) { width: 48%; } 
+        .calendar-table th:nth-child(4) { width: 15%; } 
+        .calendar-table th:nth-child(5) { width: 15%; } 
 
         .calendar-table th {
             font-weight: 700;
@@ -191,16 +224,15 @@
             text-align: center;
         }
 
-        /* Alineación especial para el enfoque */
         .calendar-table td.enfoque-cell {
             text-align: left;
             font-weight: 500;
             cursor: text;
+            user-select: text;
         }
 
         .calendar-table td.clickable-cell {
             cursor: pointer;
-            user-select: none;
             transition: opacity 0.15s ease;
         }
 
@@ -213,135 +245,541 @@
             outline: 2px dashed #FF5EAA;
             background-color: rgba(254, 247, 242, 0.9);
         }
+
+        /* INDICADOR DE PUNTOS INFERIOR */
+        .pagination-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #D1D1D6; /* Gris Claro Base */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background-color: #48484A; /* Gris Oscuro Dinámico */
+            transform: scale(1.2);
+        }
+
+        /* MEDIA QUERIES (OPTIMIZACIÓN RESPONSIVA MÓVIL Y TABLETA) */
+        @media (max-width: 1100px) {
+            .main-title { font-size: 4rem; }
+            .badge-calendar { font-size: 1.4rem; }
+            .week-oval { font-size: 1.2rem; padding: 6px 20px; }
+            .header { flex-direction: column; align-items: stretch; }
+            .header-right { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 20px 10px; }
+            .main-title { font-size: 2.8rem; text-align: center; }
+            .title-row { justify-content: center; flex-wrap: wrap; gap: 15px; }
+            .header-right { grid-template-columns: 1fr; gap: 15px; }
+            .calendar-table th, .calendar-table td { padding: 10px; font-size: 0.85rem; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="calendar-container">
-        
-        <div class="header">
-            <div class="header-left">
-                <div class="main-title" contenteditable="true">Abril 2026</div>
-                <div class="title-row">
-                    <div class="badge-calendar" contenteditable="true">Plan de<br>Contenido</div>
-                    <div class="week-oval" contenteditable="true">Primera Semana</div>
+    <div class="slider-container" id="sliderContainer">
+        <div class="slides-wrapper" id="slidesWrapper">
+            
+            <div class="slide">
+                <div class="header">
+                    <div class="header-left">
+                        <div class="main-title" contenteditable="true">Abril 2026</div>
+                        <div class="title-row">
+                            <div class="badge-calendar" contenteditable="true">Plan de<br>Contenido</div>
+                            <div class="week-oval" contenteditable="true">Primera Semana</div>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div class="legend-col">
+                            <h3>FORMATOS</h3>
+                            <div class="platform-pills">
+                                <span class="pill p1" contenteditable="true">Reel</span>
+                                <span class="pill p2" contenteditable="true">Historia</span>
+                                <span class="pill p4" contenteditable="true">Carrucel</span>
+                                <span class="pill p5" contenteditable="true">Motion</span>
+                            </div>
+                        </div>
+                        <div class="legend-col">
+                            <h3>ESTADOS</h3>
+                            <div class="status-list-horizontal">
+                                <span class="status-pill st-proceso">En Proceso</span>
+                                <span class="status-pill st-completado">Completado</span>
+                                <span class="status-pill st-incompleto">Incompleto</span>
+                            </div>
+                        </div>
+                        <div class="legend-col">
+                            <h3>NOTAS</h3>
+                            <p style="font-size: 0.75rem; color: #555; line-height: 1.3;">Doble clic en Estado o Formato para cambiar. Desliza horizontalmente para cambiar de semana.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="calendar-table">
+                        <thead>
+                            <tr>
+                                <th>Día</th>
+                                <th>Fecha</th>
+                                <th>Enfoque del Contenido</th>
+                                <th>Estado</th>
+                                <th>Formato</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td contenteditable="true">Lunes</td>
+                                <td contenteditable="true">30/03</td>
+                                <td class="enfoque-cell" contenteditable="true">Tips estratégicos para optimizar el alcance orgánico semanal.</td>
+                                <td class="clickable-cell st-proceso" data-type="estado">En Proceso</td>
+                                <td class="clickable-cell p1" data-type="formato">Reel</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Martes</td>
+                                <td contenteditable="true">31/03</td>
+                                <td class="enfoque-cell" contenteditable="true">Detrás de cámaras: Producción y flujo de diseño visual.</td>
+                                <td class="clickable-cell st-completado" data-type="estado">Completado</td>
+                                <td class="clickable-cell p2" data-type="formato">Historia</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Miércoles</td>
+                                <td contenteditable="true">01/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Tutorial paso a paso: Cómo estructurar plantillas interactivas.</td>
+                                <td class="clickable-cell st-incompleto" data-type="estado">Incompleto</td>
+                                <td class="clickable-cell p4" data-type="formato">Carrucel</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Jueves</td>
+                                <td contenteditable="true">02/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Análisis de métricas mensuales y toma de decisiones basadas en datos.</td>
+                                <td class="clickable-cell st-proceso" data-type="estado">En Proceso</td>
+                                <td class="clickable-cell p5" data-type="formato">Motion</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Viernes</td>
+                                <td contenteditable="true">03/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Preguntas y respuestas con la comunidad en directo.</td>
+                                <td class="clickable-cell st-completado" data-type="estado">Completado</td>
+                                <td class="clickable-cell p2" data-type="formato">Historia</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="header-right">
-                <div class="legend-col">
-                    <h3>FORMATOS</h3>
-                    <div class="platform-pills">
-                        <span class="pill p1" contenteditable="true">Reel</span>
-                        <span class="pill p2" contenteditable="true">Historia</span>
-                        <span class="pill p4" contenteditable="true">Carrucel</span>
-                        <span class="pill p5" contenteditable="true">Motion</span>
+            <div class="slide">
+                <div class="header">
+                    <div class="header-left">
+                        <div class="main-title" contenteditable="true">Abril 2026</div>
+                        <div class="title-row">
+                            <div class="badge-calendar" contenteditable="true">Plan de<br>Contenido</div>
+                            <div class="week-oval" contenteditable="true">Segunda Semana</div>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div class="legend-col">
+                            <h3>FORMATOS</h3>
+                            <div class="platform-pills">
+                                <span class="pill p1" contenteditable="true">Reel</span>
+                                <span class="pill p2" contenteditable="true">Historia</span>
+                                <span class="pill p4" contenteditable="true">Carrucel</span>
+                                <span class="pill p5" contenteditable="true">Motion</span>
+                            </div>
+                        </div>
+                        <div class="legend-col">
+                            <h3>ESTADOS</h3>
+                            <div class="status-list-horizontal">
+                                <span class="status-pill st-proceso">En Proceso</span>
+                                <span class="status-pill st-completado">Completado</span>
+                                <span class="status-pill st-incompleto">Incompleto</span>
+                            </div>
+                        </div>
+                        <div class="legend-col">
+                            <h3>NOTAS</h3>
+                            <p style="font-size: 0.75rem; color: #555; line-height: 1.3;">Planificación estratégica y lanzamientos de media mitad de mes.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="legend-col">
-                    <h3>ESTADOS</h3>
-                    <div class="status-list-horizontal">
-                        <span class="status-pill st-proceso">En Proceso</span>
-                        <span class="status-pill st-completado">Completado</span>
-                        <span class="status-pill st-incompleto">Incompleto</span>
-                    </div>
-                </div>
-                <div class="legend-col" style="max-width: 250px;">
-                    <h3>NOTAS DE CONTROL</h3>
-                    <p style="font-size: 0.8rem; color: #555; line-height: 1.4;">Haz un clic para modificar los textos. Haz <strong>doble clic</strong> en Estado o Formato para cambiar su diseño (ambos incluyen opción vacía).</p>
+
+                <div class="table-responsive">
+                    <table class="calendar-table">
+                        <thead>
+                            <tr>
+                                <th>Día</th>
+                                <th>Fecha</th>
+                                <th>Enfoque del Contenido</th>
+                                <th>Estado</th>
+                                <th>Formato</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td contenteditable="true">Lunes</td>
+                                <td contenteditable="true">06/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Caso de estudio: Cómo aumentamos las conversiones de marca.</td>
+                                <td class="clickable-cell st-proceso" data-type="estado">En Proceso</td>
+                                <td class="clickable-cell p4" data-type="formato">Carrucel</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Martes</td>
+                                <td contenteditable="true">07/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Infografía interactiva sobre tendencias visuales de la temporada.</td>
+                                <td class="clickable-cell" data-type="estado"></td>
+                                <td class="clickable-cell p5" data-type="formato">Motion</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Miércoles</td>
+                                <td contenteditable="true">08/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Contenido dinámico: Hacks de composición rápida en apps móviles.</td>
+                                <td class="clickable-cell st-completado" data-type="estado">Completado</td>
+                                <td class="clickable-cell p1" data-type="formato">Reel</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Jueves</td>
+                                <td contenteditable="true">09/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Colaboraciones informativas y mención a marcas aliadas.</td>
+                                <td class="clickable-cell st-proceso" data-type="estado">En Proceso</td>
+                                <td class="clickable-cell p2" data-type="formato">Historia</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Viernes</td>
+                                <td contenteditable="true">10/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Dinámica interactiva: Encuestas semanales de preferencia.</td>
+                                <td class="clickable-cell st-incompleto" data-type="estado">Incompleto</td>
+                                <td class="clickable-cell" data-type="formato"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
+            <div class="slide">
+                <div class="header">
+                    <div class="header-left">
+                        <div class="main-title" contenteditable="true">Abril 2026</div>
+                        <div class="title-row">
+                            <div class="badge-calendar" contenteditable="true">Plan de<br>Contenido</div>
+                            <div class="week-oval" contenteditable="true">Tercera Semana</div>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div class="legend-col">
+                            <h3>FORMATOS</h3>
+                            <div class="platform-pills">
+                                <span class="pill p1" contenteditable="true">Reel</span>
+                                <span class="pill p2" contenteditable="true">Historia</span>
+                                <span class="pill p4" contenteditable="true">Carrucel</span>
+                                <span class="pill p5" contenteditable="true">Motion</span>
+                            </div>
+                        </div>
+                        <div class="legend-col">
+                            <h3>ESTADOS</h3>
+                            <div class="status-list-horizontal">
+                                <span class="status-pill st-proceso">En Proceso</span>
+                                <span class="status-pill st-completado">Completado</span>
+                                <span class="status-pill st-incompleto">Incompleto</span>
+                            </div>
+                        </div>
+                        <div class="legend-col">
+                            <h3>NOTAS</h3>
+                            <p style="font-size: 0.75rem; color: #555; line-height: 1.3;">Contenido enfocado en fidelización profunda y descarga de recursos.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="calendar-table">
+                        <thead>
+                            <tr>
+                                <th>Día</th>
+                                <th>Fecha</th>
+                                <th>Enfoque del Contenido</th>
+                                <th>Estado</th>
+                                <th>Formato</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td contenteditable="true">Lunes</td>
+                                <td contenteditable="true">13/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Estrategias de Growth para creadores visuales independientes.</td>
+                                <td class="clickable-cell st-proceso" data-type="estado">En Proceso</td>
+                                <td class="clickable-cell p1" data-type="formato">Reel</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Martes</td>
+                                <td contenteditable="true">14/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Lanzamiento oficial de la plantilla editable descargable del mes.</td>
+                                <td class="clickable-cell st-completado" data-type="estado">Completado</td>
+                                <td class="clickable-cell p4" data-type="formato">Carrucel</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Miércoles</td>
+                                <td contenteditable="true">15/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Anatomía de un feed de alto impacto comercial.</td>
+                                <td class="clickable-cell st-incompleto" data-type="estado">Incompleto</td>
+                                <td class="clickable-cell p5" data-type="formato">Motion</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Jueves</td>
+                                <td contenteditable="true">16/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Mitos recurrentes en la gestión de branding digital.</td>
+                                <td class="clickable-cell" data-type="estado"></td>
+                                <td class="clickable-cell p2" data-type="formato">Historia</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Viernes</td>
+                                <td contenteditable="true">17/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Resumen estético de paletas cromáticas recomendadas.</td>
+                                <td class="clickable-cell st-completado" data-type="estado">Completado</td>
+                                <td class="clickable-cell p4" data-type="formato">Carrucel</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="slide">
+                <div class="header">
+                    <div class="header-left">
+                        <div class="main-title" contenteditable="true">Abril 2026</div>
+                        <div class="title-row">
+                            <div class="badge-calendar" contenteditable="true">Plan de<br>Contenido</div>
+                            <div class="week-oval" contenteditable="true">Cuarta Semana</div>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div class="legend-col">
+                            <h3>FORMATOS</h3>
+                            <div class="platform-pills">
+                                <span class="pill p1" contenteditable="true">Reel</span>
+                                <span class="pill p2" contenteditable="true">Historia</span>
+                                <span class="pill p4" contenteditable="true">Carrucel</span>
+                                <span class="pill p5" contenteditable="true">Motion</span>
+                            </div>
+                        </div>
+                        <div class="legend-col">
+                            <h3>ESTADOS</h3>
+                            <div class="status-list-horizontal">
+                                <span class="status-pill st-proceso">En Proceso</span>
+                                <span class="status-pill st-completado">Completado</span>
+                                <span class="status-pill st-incompleto">Incompleto</span>
+                            </div>
+                        </div>
+                        <div class="legend-col">
+                            <h3>NOTAS</h3>
+                            <p style="font-size: 0.75rem; color: #555; line-height: 1.3;">Cierre de ciclo, evaluación global de objetivos e insights.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="calendar-table">
+                        <thead>
+                            <tr>
+                                <th>Día</th>
+                                <th>Fecha</th>
+                                <th>Enfoque del Contenido</th>
+                                <th>Estado</th>
+                                <th>Formato</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td contenteditable="true">Lunes</td>
+                                <td contenteditable="true">20/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Alineación de objetivos de marca para la planificación futura.</td>
+                                <td class="clickable-cell st-proceso" data-type="estado">En Proceso</td>
+                                <td class="clickable-cell p5" data-type="formato">Motion</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Martes</td>
+                                <td contenteditable="true">21/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Análisis retrospectivo: Lo que mejor funcionó este mes.</td>
+                                <td class="clickable-cell st-completado" data-type="estado">Completado</td>
+                                <td class="clickable-cell p1" data-type="formato">Reel</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Miércoles</td>
+                                <td contenteditable="true">22/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Errores críticos que dañan la identidad de marca en redes.</td>
+                                <td class="clickable-cell st-incompleto" data-type="estado">Incompleto</td>
+                                <td class="clickable-cell p4" data-type="formato">Carrucel</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Jueves</td>
+                                <td contenteditable="true">23/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Preguntas finales recopiladas de la caja de interacciones.</td>
+                                <td class="clickable-cell st-proceso" data-type="estado">En Proceso</td>
+                                <td class="clickable-cell p2" data-type="formato">Historia</td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="true">Viernes</td>
+                                <td contenteditable="true">24/04</td>
+                                <td class="enfoque-cell" contenteditable="true">Mensaje de cierre, agradecimientos e indicadores clave logrados.</td>
+                                <td class="clickable-cell st-completado" data-type="estado">Completado</td>
+                                <td class="clickable-cell p1" data-type="formato">Reel</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
-        <table class="calendar-table">
-            <thead>
-                <tr>
-                    <th>Día</th>
-                    <th>Fecha</th>
-                    <th>Enfoque del Contenido</th>
-                    <th>Estado</th>
-                    <th>Formato</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td contenteditable="true">Lunes</td>
-                    <td contenteditable="true">30/03</td>
-                    <td class="enfoque-cell" contenteditable="true">Tips estratégicos para optimizar el alcance orgánico semanal.</td>
-                    <td class="clickable-cell st-proceso" data-type="estado">En Proceso</td>
-                    <td class="clickable-cell p1" data-type="formato">Reel</td>
-                </tr>
-                <tr>
-                    <td contenteditable="true">Martes</td>
-                    <td contenteditable="true">31/03</td>
-                    <td class="enfoque-cell" contenteditable="true">Detrás de cámaras: Producción y flujo de diseño visual.</td>
-                    <td class="clickable-cell st-completado" data-type="estado">Completado</td>
-                    <td class="clickable-cell p2" data-type="formato">Historia</td>
-                </tr>
-                <tr>
-                    <td contenteditable="true">Miércoles</td>
-                    <td contenteditable="true">01/04</td>
-                    <td class="enfoque-cell" contenteditable="true">Tutorial paso a paso: Cómo estructurar plantillas interactivas.</td>
-                    <td class="clickable-cell st-incompleto" data-type="estado">Incompleto</td>
-                    <td class="clickable-cell p4" data-type="formato">Carrucel</td>
-                </tr>
-                <tr>
-                    <td contenteditable="true">Jueves</td>
-                    <td contenteditable="true">02/04</td>
-                    <td class="enfoque-cell" contenteditable="true">Análisis de métricas mensuales y toma de decisiones basadas en datos.</td>
-                    <td class="clickable-cell st-proceso" data-type="estado">En Proceso</td>
-                    <td class="clickable-cell p5" data-type="formato">Motion</td>
-                </tr>
-                <tr>
-                    <td contenteditable="true">Viernes</td>
-                    <td contenteditable="true">03/04</td>
-                    <td class="enfoque-cell" contenteditable="true">Preguntas y respuestas con la comunidad en directo.</td>
-                    <td class="clickable-cell st-completado" data-type="estado">Completado</td>
-                    <td class="clickable-cell p2" data-type="formato">Historia</td>
-                </tr>
-                <tr>
-                    <td contenteditable="true">Sábado</td>
-                    <td contenteditable="true">04/04</td>
-                    <td class="enfoque-cell" contenteditable="true">Resumen de las mejores herramientas de automatización de la semana.</td>
-                    <td class="clickable-cell st-proceso" data-type="estado">En Proceso</td>
-                    <td class="clickable-cell p1" data-type="formato">Reel</td>
-                </tr>
-                <tr>
-                    <td contenteditable="true">Domingo</td>
-                    <td contenteditable="true">05/04</td>
-                    <td class="enfoque-cell" contenteditable="true">Frase inspiradora y descanso programado de la comunidad.</td>
-                    <td class="clickable-cell st-completado" data-type="estado">Completado</td>
-                    <td class="clickable-cell p4" data-type="formato">Carrucel</td>
-                </tr>
-            </tbody>
-        </table>
-
+        <div class="pagination-dots">
+            <span class="dot active" onclick="goToSlide(0)"></span>
+            <span class="dot" onclick="goToSlide(1)"></span>
+            <span class="dot" onclick="goToSlide(2)"></span>
+            <span class="dot" onclick="goToSlide(3)"></span>
+        </div>
     </div>
 
     <script>
+        /* ================= LÓGICA DEL SLIDER (TRIPLE NAVEGACIÓN) ================= */
+        const container = document.getElementById('sliderContainer');
+        const wrapper = document.getElementById('slidesWrapper');
+        const dots = document.querySelectorAll('.dot');
+        
+        let currentSlide = 0;
+        const totalSlides = 4;
+        
+        let isDragging = false;
+        let startX = 0;
+        let currentX = 0;
+
+        // Función central de cambio de slide con bloqueo estricto de límites
+        function goToSlide(index) {
+            if (index < 0) index = 0;
+            if (index >= totalSlides) index = totalSlides - 1;
+            
+            currentSlide = index;
+            wrapper.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+            wrapper.style.transform = `translateX(-${currentSlide * 25}%)`;
+            
+            // Actualizar estados visuales de los puntitos indicativos
+            dots.forEach((dot, idx) => {
+                if (idx === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // 1. Navegación por flechas de teclado
+        window.addEventListener('keydown', (e) => {
+            // No interrumpir si el usuario está escribiendo dentro de una celda
+            if (document.activeElement.getAttribute('contenteditable') === 'true') return;
+            
+            if (e.key === 'ArrowLeft') {
+                goToSlide(currentSlide - 1);
+            } else if (e.key === 'ArrowRight') {
+                goToSlide(currentSlide + 1);
+            }
+        });
+
+        // Obtener la posición X nativa según el tipo de puntero
+        function getX(e) {
+            return e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+        }
+
+        // Iniciar Arrastre (Mouse y Touch)
+        function dragStart(e) {
+            // Evitar conflictos con celdas editables o interacciones rápidas de clics
+            if (e.target.closest('[contenteditable="true"]') || e.target.closest('.clickable-cell')) return;
+            
+            isDragging = true;
+            startX = getX(e);
+            currentX = startX;
+            wrapper.style.transition = 'none'; // Movimiento fluido en tiempo real
+        }
+
+        // Moverse durante el arrastre
+        function dragMove(e) {
+            if (!isDragging) return;
+            currentX = getX(e);
+            const moveX = currentX - startX;
+            
+            // Calcular porcentaje relativo al contenedor maestro
+            const percentageMove = (moveX / container.clientWidth) * 25;
+            let targetPercent = -currentSlide * 25 + percentageMove;
+            
+            // Efecto de amortiguación elástica leve si intenta romper los límites obligatorios
+            if (currentSlide === 0 && moveX > 0) targetPercent = percentageMove * 0.3;
+            if (currentSlide === totalSlides - 1 && moveX < 0) targetPercent = -currentSlide * 25 + percentageMove * 0.3;
+
+            wrapper.style.transform = `translateX(${targetPercent}%)`;
+        }
+
+        // Finalizar Arrastre externo o soltar puntero
+        function dragEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const totalDelta = currentX - startX;
+            const threshold = container.clientWidth * 0.12; // Umbral del 12% para pasar página
+
+            if (totalDelta < -threshold && currentSlide < totalSlides - 1) {
+                goToSlide(currentSlide + 1);
+            } else if (totalDelta > threshold && currentSlide > 0) {
+                goToSlide(currentSlide - 1);
+            } else {
+                goToSlide(currentSlide); // Volver al estado fijo actual si no supera umbral
+            }
+        }
+
+        // Vinculación de eventos al contenedor
+        container.addEventListener('mousedown', dragStart);
+        container.addEventListener('touchstart', dragStart, { passive: true });
+
+        container.addEventListener('mousemove', dragMove);
+        container.addEventListener('touchmove', dragMove, { passive: true });
+
+        container.addEventListener('mouseup', dragEnd);
+        container.addEventListener('mouseleave', dragEnd);
+        container.addEventListener('touchend', dragEnd);
+
+
+        /* ================= INTERACCIÓN INTERNA DE CELDAS (DOUBLE CLICK) ================= */
         const clickCells = document.querySelectorAll('.calendar-table td.clickable-cell');
 
         clickCells.forEach(cell => {
             cell.addEventListener('dblclick', function(e) {
                 e.preventDefault();
+                e.stopPropagation();
                 const cellType = this.getAttribute('data-type');
 
                 if (cellType === 'estado') {
-                    // Ciclo de Estados con nuevos colores asignados
+                    // Ciclo exacto solicitado con los nuevos colores HEX estipulados y opción vacía
                     const estados = [
                         { text: 'En Proceso', class: 'st-proceso' },
                         { text: 'Completado', class: 'st-completado' },
                         { text: 'Incompleto', class: 'st-incompleto' },
-                        { text: '', class: '' } // Opción Vacía
+                        { text: '', class: '' } // Renglón en blanco cíclico
                     ];
                     
                     let currentText = this.innerText.trim();
                     let currentIndex = estados.findIndex(est => est.text === currentText);
                     
-                    if (currentIndex === -1) currentIndex = 3;
+                    if (currentIndex === -1) currentIndex = 3; // Por si está vacío
 
                     let nextIndex = (currentIndex + 1) % estados.length;
 
+                    // Limpiar todas las clases anteriores de estado
                     estados.forEach(est => {
                         if (est.class) this.classList.remove(est.class);
                     });
@@ -352,13 +790,13 @@
                     }
 
                 } else if (cellType === 'formato') {
-                    // Ciclo de Formatos incluyendo ahora la opción vacía al final
+                    // Ciclo de Formatos incluyendo ahora su renglón en blanco dinámico al final
                     const formatos = [
                         { text: 'Reel', class: 'p1' },
                         { text: 'Historia', class: 'p2' },
                         { text: 'Carrucel', class: 'p4' },
                         { text: 'Motion', class: 'p5' },
-                        { text: '', class: '' } // Opción Vacía
+                        { text: '', class: '' } // Renglón en blanco cíclico
                     ];
 
                     let currentText = this.innerText.trim();
