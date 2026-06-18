@@ -983,6 +983,46 @@
                 }
             });
         });
+
+        // ==========================================
+// AUTOOCULTAR PUNTOS POR INACTIVIDAD
+// ==========================================
+const dotsContainer = document.querySelector('.pagination-dots');
+let hideTimeout;
+
+// Función para mostrar los puntos
+function showDots() {
+    dotsContainer.style.transition = 'opacity 0.3s ease';
+    dotsContainer.style.opacity = '1';
+    clearTimeout(hideTimeout);
+    
+    // Después de 3 segundos sin interacción, los oculta
+    hideTimeout = setTimeout(() => {
+        dotsContainer.style.opacity = '0';
+    }, 3000);
+}
+
+// Función para ocultar inmediatamente (opcional)
+function hideDots() {
+    dotsContainer.style.transition = 'opacity 0.5s ease';
+    dotsContainer.style.opacity = '0';
+}
+
+// Eventos que activan la visibilidad
+const events = ['mousemove', 'mousedown', 'touchstart', 'keydown', 'wheel'];
+
+events.forEach(event => {
+    document.addEventListener(event, showDots);
+});
+
+// Los puntos siempre visibles al cargar
+setTimeout(() => {
+    dotsContainer.style.transition = 'opacity 1s ease';
+    dotsContainer.style.opacity = '1';
+    hideTimeout = setTimeout(() => {
+        dotsContainer.style.opacity = '0';
+    }, 1500);
+}, 100);
     </script>
 
 </body></html>
