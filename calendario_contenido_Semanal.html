@@ -327,7 +327,7 @@
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
-                gap: 10px;
+                gap: 40px;
             }
 
             .header-logo {
@@ -976,6 +976,7 @@
         let currentSlide = 0;
         const totalSlides = 4;
         
+        let starty = 0
         let isDragging = false;
         let startX = 0;
         let currentX = 0;
@@ -994,6 +995,52 @@
                 } else {
                     dot.classList.remove('active');
                 }
+
+                function dragStart(e) {
+    const isMouseEvent = e.type.includes('mouse');
+    const isDesktop = window.innerWidth > 1024;
+
+    // Ignorar si está en escritorio y hace clic en la tabla
+    if (isDesktop && isMouseEvent && e.target.closest('.calendar-table')) {
+        return;
+    }
+
+    // Ignorar si está editando o en los puntos
+    if (e.target.closest('[contenteditable="true"]') || 
+        e.target.closest('.clickable-cell') || 
+        e.target.closest('.pagination-dots')) return;
+    
+    // Guardar posición inicial X e Y para detectar dirección
+    const touch = e.touches ? e.touches[0] : e;
+    startX = touch.pageX;
+    startY = touch.pageY;
+    isDragging = true;
+    wrapper.style.transition = 'none';
+}
+
+            function dragMove(e) {
+    if (!isDragging) return;
+    
+    const touch = e.touches ? e.touches[0] : e;
+    currentX = touch.pageX;
+    const currentY = touch.pageY;
+    
+    const deltaX = currentX - startX;
+    const deltaY = currentY - startY;
+    
+    // Si el movimiento es más vertical que horizontal, NO mover el slider
+    if (Math.abs(deltaY) > Math.abs(deltaX) && window.innerWidth <= 768) {
+        return;
+    }
+    
+    const percentageMove = (deltaX / container.clientWidth) * 25;
+    let targetPercent = -currentSlide * 25 + percentageMove;
+    
+    if (currentSlide === 0 && deltaX > 0) targetPercent = percentageMove * 0.25;
+    if (currentSlide === totalSlides - 1 && deltaX < 0) targetPercent = -currentSlide * 25 + percentageMove * 0.25;
+
+    wrapper.style.transform = `translateX(${targetPercent}%)`;
+}
             });
         }
 
@@ -1205,7 +1252,7 @@
             dotsContainer.style.opacity = '1';
             hideTimeout = setTimeout(() => {
                 dotsContainer.style.opacity = '0';
-            }, 3000);
+            }, 1500);
         }, 100);
 
         // ==========================================
