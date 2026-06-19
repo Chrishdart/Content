@@ -966,7 +966,7 @@
             });
         });
 
-        // ==========================================
+       // ==========================================
         // NAVEGACIÓN Y SLIDER
         // ==========================================
         const container = document.getElementById('sliderContainer');
@@ -976,11 +976,11 @@
         let currentSlide = 0;
         const totalSlides = 4;
         
-        let starty = 0;
         let isDragging = false;
         let startX = 0;
         let currentX = 0;
-	let isSwiping = false; // nueva variable para controlar el swipe
+        let startY = 0;
+        let isSwiping = false;
 
         function goToSlide(index) {
             if (index < 0) index = 0;
@@ -996,65 +996,6 @@
                 } else {
                     dot.classList.remove('active');
                 }
-       
-	function dragStart(e) {
-    const isMouseEvent = e.type.includes('mouse');
-    const isDesktop = window.innerWidth > 1024;
-
-    if (isDesktop && isMouseEvent && e.target.closest('.calendar-table')) {
-        return;
-    }
-
-    if (e.target.closest('[contenteditable="true"]') || 
-        e.target.closest('.clickable-cell') || 
-        e.target.closest('.pagination-dots')) return;
-    
-    const touch = e.touches ? e.touches[0] : e;
-    startX = touch.pageX;
-    startY = touch.pageY;
-    isDragging = true;
-    isSwiping = false; // Reiniciamos el estado
-    wrapper.style.transition = 'none';
-}
-
-
-function dragMove(e) {
-    if (!isDragging) return;
-    
-    // Prevenir el scroll nativo SOLO si estamos en móvil y es un touch
-    if (e.cancelable && window.innerWidth <= 768) {
-        e.preventDefault();
-    }
-    
-    const touch = e.touches ? e.touches[0] : e;
-    currentX = touch.pageX;
-    const currentY = touch.pageY;
-    
-    const deltaX = currentX - startX;
-    const deltaY = currentY - startY;
-    
-    // Si el movimiento es vertical, detenemos el slider y dejamos scroll libre
-    if (Math.abs(deltaY) > Math.abs(deltaX) && window.innerWidth <= 768) {
-        isSwiping = false;
-        return;
-    }
-    
-    // Si el movimiento es horizontal, activamos el swipe
-    if (Math.abs(deltaX) > Math.abs(deltaY) && window.innerWidth <= 768) {
-        isSwiping = true;
-    }
-    
-    // Solo mover si es swipe horizontal
-    if (isSwiping || window.innerWidth > 768) {
-        const percentageMove = (deltaX / container.clientWidth) * 25;
-        let targetPercent = -currentSlide * 25 + percentageMove;
-        
-        if (currentSlide === 0 && deltaX > 0) targetPercent = percentageMove * 0.25;
-        if (currentSlide === totalSlides - 1 && deltaX < 0) targetPercent = -currentSlide * 25 + percentageMove * 0.25;
-
-        wrapper.style.transform = `translateX(${targetPercent}%)`;
-    }
-}
             });
         }
 
@@ -1094,10 +1035,9 @@ function dragMove(e) {
             }
         });
 
-        function getX(e) {
-            return e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
-        }
-
+        // ==========================================
+        // DRAG MEJORADO CON RESISTENCIA EN MÓVIL
+        // ==========================================
         function dragStart(e) {
             const isMouseEvent = e.type.includes('mouse');
             const isDesktop = window.innerWidth > 1024;
@@ -1106,31 +1046,65 @@ function dragMove(e) {
                 return;
             }
 
-            if (e.target.closest('[contenteditable="true"]') || e.target.closest('.clickable-cell') || e.target.closest('.pagination-dots')) return;
+            if (e.target.closest('[contenteditable="true"]') || 
+                e.target.closest('.clickable-cell') || 
+                e.target.closest('.pagination-dots')) return;
             
+            const touch = e.touches ? e.touches[0] : e;
+            startX = touch.pageX;
+            startY = touch.pageY;
             isDragging = true;
-            startX = getX(e);
-            currentX = startX;
+            isSwiping = false;
             wrapper.style.transition = 'none';
         }
 
         function dragMove(e) {
             if (!isDragging) return;
-            currentX = getX(e);
-            const moveX = currentX - startX;
             
-            const percentageMove = (moveX / container.clientWidth) * 25;
-            let targetPercent = -currentSlide * 25 + percentageMove;
+            // Prevenir el scroll nativo SOLO si estamos en móvil y es un touch
+            if (e.cancelable && window.innerWidth <= 768) {
+                e.preventDefault();
+            }
             
-            if (currentSlide === 0 && moveX > 0) targetPercent = percentageMove * 0.25;
-            if (currentSlide === totalSlides - 1 && moveX < 0) targetPercent = -currentSlide * 25 + percentageMove * 0.25;
+            const touch = e.touches ? e.touches[0] : e;
+            currentX = touch.pageX;
+            const currentY = touch.pageY;
+            
+            const deltaX = currentX - startX;
+            const deltaY = currentY - startY;
+            
+            // Si el movimiento es vertical, detenemos el slider y dejamos scroll libre
+            if (Math.abs(deltaY) > Math.abs(deltaX) && window.innerWidth <= 768) {
+                isSwiping = false;
+                return;
+            }
+            
+            // Si el movimiento es horizontal, activamos el swipe
+            if (Math.abs(deltaX) > Math.abs(deltaY) && window.innerWidth <= 768) {
+                isSwiping = true;
+            }
+            
+            // Solo mover si es swipe horizontal
+            if (isSwiping || window.innerWidth > 768) {
+                const percentageMove = (deltaX / container.clientWidth) * 25;
+                let targetPercent = -currentSlide * 25 + percentageMove;
+                
+                if (currentSlide === 0 && deltaX > 0) targetPercent = percentageMove * 0.25;
+                if (currentSlide === totalSlides - 1 && deltaX < 0) targetPercent = -currentSlide * 25 + percentageMove * 0.25;
 
-            wrapper.style.transform = `translateX(${targetPercent}%)`;
+                wrapper.style.transform = `translateX(${targetPercent}%)`;
+            }
         }
 
         function dragEnd() {
             if (!isDragging) return;
             isDragging = false;
+            
+            // Si no hubo swipe horizontal, no hacer nada
+            if (!isSwiping && window.innerWidth <= 768) {
+                isSwiping = false;
+                return;
+            }
             
             const totalDelta = currentX - startX;
             const threshold = container.clientWidth * 0.12;
@@ -1142,13 +1116,15 @@ function dragMove(e) {
             } else {
                 goToSlide(currentSlide);
             }
+            
+            isSwiping = false;
         }
 
         window.addEventListener('mousedown', dragStart);
         window.addEventListener('touchstart', dragStart, { passive: true });
 
         window.addEventListener('mousemove', dragMove);
-        window.addEventListener('touchmove', dragMove, { passive: true });
+        window.addEventListener('touchmove', dragMove, { passive: false });
 
         window.addEventListener('mouseup', dragEnd);
         window.addEventListener('touchend', dragEnd);
@@ -1246,7 +1222,7 @@ function dragMove(e) {
                 clearTimeout(hideTimeout);
                 hideTimeout = setTimeout(() => {
                     dotsContainer.style.opacity = '0';
-                }, 1200);
+                }, 3000);
             }
         });
 
@@ -1266,7 +1242,7 @@ function dragMove(e) {
             dotsContainer.style.opacity = '1';
             hideTimeout = setTimeout(() => {
                 dotsContainer.style.opacity = '0';
-            }, 1500);
+            }, 3000);
         }, 100);
 
         // ==========================================
