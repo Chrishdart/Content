@@ -14,9 +14,10 @@
             --p2-green: #C9ECD7;  /* Historia */
             --p4-pink: #F5C6DC;   /* Carrucel */
             --p5-blue: #B7DCF0;   /* Motion */
+            --p6-purple: #A99CF9;  /* Pauta (NUEVO) */
 
             /* Colores de Estado Solicitados */
-            --status-proceso: #ffbd7d;    /* En proceso */
+            --status-produccion: #ffbd7d;    /* En producción (antes En Proceso) */
             --status-completado: #ade1ad; /* Completado */
             --status-incompleto: #f194ac; /* Incompleto */
         }
@@ -171,8 +172,10 @@
         .p2 { background-color: var(--p2-green) !important; }
         .p4 { background-color: var(--p4-pink) !important; }
         .p5 { background-color: var(--p5-blue) !important; }
+        .p6 { background-color: var(--p6-purple) !important; } /* NUEVO: Pauta */
 
-        .st-proceso { background-color: var(--status-proceso) !important; }
+        /* Clases de Estados - Actualizadas */
+        .st-produccion { background-color: var(--status-produccion) !important; }
         .st-completado { background-color: var(--status-completado) !important; }
         .st-incompleto { background-color: var(--status-incompleto) !important; }
 
@@ -513,7 +516,7 @@
             }
         }
     </style>
-<style type="text/css"></style></head>
+</head>
 <body>
 
     <div class="slider-container" id="sliderContainer">
@@ -527,10 +530,10 @@
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 655.75 655.75"><defs><style>.cls-1{fill:#f27019;}</style></defs><g id="Capa_2" data-name="Capa 2"><g id="Capa_1-2" data-name="Capa 1"><path class="cls-1" d="M323.23,560.41,295.62,344.64a5,5,0,0,0-4.32-4.33L75.53,312.71a5,5,0,0,1-1.3-9.57l434-181.95a5,5,0,0,1,6.55,6.54l-181.95,434A5,5,0,0,1,323.23,560.41Z"></path><path class="cls-1" d="M327.88,655.75A327.88,327.88,0,0,1,96,96,327.88,327.88,0,0,1,559.72,559.72,325.71,325.71,0,0,1,327.88,655.75Zm0-639.75C155.91,16,16,155.91,16,327.88S155.91,639.75,327.88,639.75s311.87-139.9,311.87-311.87S499.85,16,327.88,16Z"></path></g></g></svg>
                         </div>
                         <div class="title-block">
-                            <div class="main-title" contenteditable="true">Junio 2026</div>
+                            <div class="main-title" contenteditable="false">Agosto 2026</div>
                             <div class="title-row">
-                                <div class="badge-calendar" contenteditable="true">Plan de<br>Contenido</div>
-                                <div class="week-oval" contenteditable="true">Primera Semana</div>
+                                <div class="badge-calendar" contenteditable="false">Plan de<br>Contenido</div>
+                                <div class="week-oval" contenteditable="false">Primera Semana</div>
                             </div>
                         </div>
                     </div>
@@ -538,23 +541,24 @@
                         <div class="legend-col">
                             <h3>FORMATOS</h3>
                             <div class="platform-pills">
-                                <span class="pill p1" contenteditable="true">Reel</span>
-                                <span class="pill p2" contenteditable="true">Historia</span>
-                                <span class="pill p4" contenteditable="true">Carrucel</span>
-                                <span class="pill p5" contenteditable="true">Motion</span>
+                                <span class="pill p1" contenteditable="false">Reel</span>
+                                <span class="pill p2" contenteditable="false">Historia</span>
+                                <span class="pill p4" contenteditable="false">Carrucel</span>
+                                <span class="pill p5" contenteditable="false">Motion</span>
+                                <span class="pill p6" contenteditable="false">Pauta</span> <!-- NUEVO -->
                             </div>
                         </div>
                         <div class="legend-col">
                             <h3>ESTADOS</h3>
                             <div class="status-list-horizontal">
-                                <span class="status-pill st-proceso">En Proceso</span>
+                                <span class="status-pill st-produccion">En producción</span>
                                 <span class="status-pill st-completado">Completado</span>
                                 <span class="status-pill st-incompleto">Incompleto</span>
                             </div>
                         </div>
                         <div class="legend-col">
                             <h3>NOTAS</h3>
-                            <p class="notes-box" contenteditable="true">Para un mejor control, contamos los meses desde Junio. aunque comenzamos el 15 de Mayo.</p>
+                            <p class="notes-box" contenteditable="false">Para un mejor control, contamos los meses desde Junio. aunque comenzamos el 15 de Mayo.</p>
                         </div>
                     </div>
                 </div>
@@ -572,51 +576,51 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Lunes</td>
-                                <td contenteditable="true" data-label="Fecha">01/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Lunes</td>
+                                <td contenteditable="false" data-label="Fecha">03/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Martes</td>
-                                <td contenteditable="true" data-label="Fecha">02/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Martes</td>
+                                <td contenteditable="false" data-label="Fecha">04/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Miércoles</td>
-                                <td contenteditable="true" data-label="Fecha">03/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Miércoles</td>
+                                <td contenteditable="false" data-label="Fecha">05/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Jueves</td>
-                                <td contenteditable="true" data-label="Fecha">04/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Jueves</td>
+                                <td contenteditable="false" data-label="Fecha">06/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Viernes</td>
-                                <td contenteditable="true" data-label="Fecha">05/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque">Maxi vallas instaladas en la Vela. Show off del diseño, instalación y acabado final.</td>
-                                <td class="clickable-cell st-completado" data-type="estado" data-label="Estado">Completado</td>
-                                <td class="clickable-cell p1" data-type="formato" data-label="Formato">Reel</td>
-                            </tr>
-                            <tr>
-                                <td contenteditable="true" data-label="Día">Sábado</td>
-                                <td contenteditable="true" data-label="Fecha">06/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Viernes</td>
+                                <td contenteditable="false" data-label="Fecha">07/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Domingo</td>
-                                <td contenteditable="true" data-label="Fecha">07/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Sábado</td>
+                                <td contenteditable="false" data-label="Fecha">08/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
+                                <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
+                                <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="false" data-label="Día">Domingo</td>
+                                <td contenteditable="false" data-label="Fecha">09/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
@@ -633,10 +637,10 @@
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 655.75 655.75"><defs><style>.cls-1{fill:#f27019;}</style></defs><g id="Capa_2" data-name="Capa 2"><g id="Capa_1-2" data-name="Capa 1"><path class="cls-1" d="M323.23,560.41,295.62,344.64a5,5,0,0,0-4.32-4.33L75.53,312.71a5,5,0,0,1-1.3-9.57l434-181.95a5,5,0,0,1,6.55,6.54l-181.95,434A5,5,0,0,1,323.23,560.41Z"></path><path class="cls-1" d="M327.88,655.75A327.88,327.88,0,0,1,96,96,327.88,327.88,0,0,1,559.72,559.72,325.71,325.71,0,0,1,327.88,655.75Zm0-639.75C155.91,16,16,155.91,16,327.88S155.91,639.75,327.88,639.75s311.87-139.9,311.87-311.87S499.85,16,327.88,16Z"></path></g></g></svg>
                         </div>
                         <div class="title-block">
-                            <div class="main-title" contenteditable="true">Junio 2026</div>
+                            <div class="main-title" contenteditable="false">Agosto 2026</div>
                             <div class="title-row">
-                                <div class="badge-calendar" contenteditable="true">Plan de<br>Contenido</div>
-                                <div class="week-oval" contenteditable="true">Segunda Semana</div>
+                                <div class="badge-calendar" contenteditable="false">Plan de<br>Contenido</div>
+                                <div class="week-oval" contenteditable="false">Segunda Semana</div>
                             </div>
                         </div>
                     </div>
@@ -644,23 +648,24 @@
                         <div class="legend-col">
                             <h3>FORMATOS</h3>
                             <div class="platform-pills">
-                                <span class="pill p1" contenteditable="true">Reel</span>
-                                <span class="pill p2" contenteditable="true">Historia</span>
-                                <span class="pill p4" contenteditable="true">Carrucel</span>
-                                <span class="pill p5" contenteditable="true">Motion</span>
+                                <span class="pill p1" contenteditable="false">Reel</span>
+                                <span class="pill p2" contenteditable="false">Historia</span>
+                                <span class="pill p4" contenteditable="false">Carrucel</span>
+                                <span class="pill p5" contenteditable="false">Motion</span>
+                                <span class="pill p6" contenteditable="false">Pauta</span>
                             </div>
                         </div>
                         <div class="legend-col">
                             <h3>ESTADOS</h3>
                             <div class="status-list-horizontal">
-                                <span class="status-pill st-proceso">En Proceso</span>
+                                <span class="status-pill st-produccion">En producción</span>
                                 <span class="status-pill st-completado">Completado</span>
                                 <span class="status-pill st-incompleto">Incompleto</span>
                             </div>
                         </div>
                         <div class="legend-col">
                             <h3>NOTAS</h3>
-                            <p class="notes-box" contenteditable="true"><br></p>
+                            <p class="notes-box" contenteditable="false"><br></p>
                         </div>
                     </div>
                 </div>
@@ -678,51 +683,51 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Lunes</td>
-                                <td contenteditable="true" data-label="Fecha">08/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Lunes</td>
+                                <td contenteditable="false" data-label="Fecha">10/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Martes</td>
-                                <td contenteditable="true" data-label="Fecha">09/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Martes</td>
+                                <td contenteditable="false" data-label="Fecha">11/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Miércoles</td>
-                                <td contenteditable="true" data-label="Fecha">10/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Miércoles</td>
+                                <td contenteditable="false" data-label="Fecha">12/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Jueves</td>
-                                <td contenteditable="true" data-label="Fecha">11/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Jueves</td>
+                                <td contenteditable="false" data-label="Fecha">13/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Viernes</td>
-                                <td contenteditable="true" data-label="Fecha">12/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Viernes</td>
+                                <td contenteditable="false" data-label="Fecha">14/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Sábado</td>
-                                <td contenteditable="true" data-label="Fecha">13/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Sábado</td>
+                                <td contenteditable="false" data-label="Fecha">15/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Domingo</td>
-                                <td contenteditable="true" data-label="Fecha">14/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Domingo</td>
+                                <td contenteditable="false" data-label="Fecha">16/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
@@ -739,10 +744,10 @@
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 655.75 655.75"><defs><style>.cls-1{fill:#f27019;}</style></defs><g id="Capa_2" data-name="Capa 2"><g id="Capa_1-2" data-name="Capa 1"><path class="cls-1" d="M323.23,560.41,295.62,344.64a5,5,0,0,0-4.32-4.33L75.53,312.71a5,5,0,0,1-1.3-9.57l434-181.95a5,5,0,0,1,6.55,6.54l-181.95,434A5,5,0,0,1,323.23,560.41Z"></path><path class="cls-1" d="M327.88,655.75A327.88,327.88,0,0,1,96,96,327.88,327.88,0,0,1,559.72,559.72,325.71,325.71,0,0,1,327.88,655.75Zm0-639.75C155.91,16,16,155.91,16,327.88S155.91,639.75,327.88,639.75s311.87-139.9,311.87-311.87S499.85,16,327.88,16Z"></path></g></g></svg>
                         </div>
                         <div class="title-block">
-                            <div class="main-title" contenteditable="true">Junio 2026</div>
+                            <div class="main-title" contenteditable="false">Agosto 2026</div>
                             <div class="title-row">
-                                <div class="badge-calendar" contenteditable="true">Plan de<br>Contenido</div>
-                                <div class="week-oval" contenteditable="true">Tercera Semana</div>
+                                <div class="badge-calendar" contenteditable="false">Plan de<br>Contenido</div>
+                                <div class="week-oval" contenteditable="false">Tercera Semana</div>
                             </div>
                         </div>
                     </div>
@@ -750,23 +755,24 @@
                         <div class="legend-col">
                             <h3>FORMATOS</h3>
                             <div class="platform-pills">
-                                <span class="pill p1" contenteditable="true">Reel</span>
-                                <span class="pill p2" contenteditable="true">Historia</span>
-                                <span class="pill p4" contenteditable="true">Carrucel</span>
-                                <span class="pill p5" contenteditable="true">Motion</span>
+                                <span class="pill p1" contenteditable="false">Reel</span>
+                                <span class="pill p2" contenteditable="false">Historia</span>
+                                <span class="pill p4" contenteditable="false">Carrucel</span>
+                                <span class="pill p5" contenteditable="false">Motion</span>
+                                <span class="pill p6" contenteditable="false">Pauta</span>
                             </div>
                         </div>
                         <div class="legend-col">
                             <h3>ESTADOS</h3>
                             <div class="status-list-horizontal">
-                                <span class="status-pill st-proceso">En Proceso</span>
+                                <span class="status-pill st-produccion">En producción</span>
                                 <span class="status-pill st-completado">Completado</span>
                                 <span class="status-pill st-incompleto">Incompleto</span>
                             </div>
                         </div>
                         <div class="legend-col">
                             <h3>NOTAS</h3>
-                            <p class="notes-box" contenteditable="true"><br></p>
+                            <p class="notes-box" contenteditable="false"><br></p>
                         </div>
                     </div>
                 </div>
@@ -784,51 +790,51 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Lunes</td>
-                                <td contenteditable="true" data-label="Fecha">15/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Lunes</td>
+                                <td contenteditable="false" data-label="Fecha">17/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Martes</td>
-                                <td contenteditable="true" data-label="Fecha">16/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque">The Yard. Recorrido por el espacio que organizo Adidas en La Vela para disfrutar del mundial.</td>
-                                <td class="clickable-cell st-completado" data-type="estado" data-label="Estado">Completado</td>
-                                <td class="clickable-cell p1" data-type="formato" data-label="Formato">Reel</td>
-                            </tr>
-                            <tr>
-                                <td contenteditable="true" data-label="Día">Miércoles</td>
-                                <td contenteditable="true" data-label="Fecha">17/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Martes</td>
+                                <td contenteditable="false" data-label="Fecha">18/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Jueves</td>
-                                <td contenteditable="true" data-label="Fecha">18/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Miércoles</td>
+                                <td contenteditable="false" data-label="Fecha">19/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Viernes</td>
-                                <td contenteditable="true" data-label="Fecha">19/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Jueves</td>
+                                <td contenteditable="false" data-label="Fecha">20/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Sábado</td>
-                                <td contenteditable="true" data-label="Fecha">20/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Viernes</td>
+                                <td contenteditable="false" data-label="Fecha">21/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Domingo</td>
-                                <td contenteditable="true" data-label="Fecha">21/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Sábado</td>
+                                <td contenteditable="false" data-label="Fecha">22/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
+                                <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
+                                <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="false" data-label="Día">Domingo</td>
+                                <td contenteditable="false" data-label="Fecha">23/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
@@ -845,10 +851,10 @@
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 655.75 655.75"><defs><style>.cls-1{fill:#f27019;}</style></defs><g id="Capa_2" data-name="Capa 2"><g id="Capa_1-2" data-name="Capa 1"><path class="cls-1" d="M323.23,560.41,295.62,344.64a5,5,0,0,0-4.32-4.33L75.53,312.71a5,5,0,0,1-1.3-9.57l434-181.95a5,5,0,0,1,6.55,6.54l-181.95,434A5,5,0,0,1,323.23,560.41Z"></path><path class="cls-1" d="M327.88,655.75A327.88,327.88,0,0,1,96,96,327.88,327.88,0,0,1,559.72,559.72,325.71,325.71,0,0,1,327.88,655.75Zm0-639.75C155.91,16,16,155.91,16,327.88S155.91,639.75,327.88,639.75s311.87-139.9,311.87-311.87S499.85,16,327.88,16Z"></path></g></g></svg>
                         </div>
                         <div class="title-block">
-                            <div class="main-title" contenteditable="true">Junio 2026</div>
+                            <div class="main-title" contenteditable="false">Agosto 2026</div>
                             <div class="title-row">
-                                <div class="badge-calendar" contenteditable="true">Plan de<br>Contenido</div>
-                                <div class="week-oval" contenteditable="true">Cuarta Semana</div>
+                                <div class="badge-calendar" contenteditable="false">Plan de<br>Contenido</div>
+                                <div class="week-oval" contenteditable="false">Cuarta Semana</div>
                             </div>
                         </div>
                     </div>
@@ -856,23 +862,24 @@
                         <div class="legend-col">
                             <h3>FORMATOS</h3>
                             <div class="platform-pills">
-                                <span class="pill p1" contenteditable="true">Reel</span>
-                                <span class="pill p2" contenteditable="true">Historia</span>
-                                <span class="pill p4" contenteditable="true">Carrucel</span>
-                                <span class="pill p5" contenteditable="true">Motion</span>
+                                <span class="pill p1" contenteditable="false">Reel</span>
+                                <span class="pill p2" contenteditable="false">Historia</span>
+                                <span class="pill p4" contenteditable="false">Carrucel</span>
+                                <span class="pill p5" contenteditable="false">Motion</span>
+                                <span class="pill p6" contenteditable="false">Pauta</span>
                             </div>
                         </div>
                         <div class="legend-col">
                             <h3>ESTADOS</h3>
                             <div class="status-list-horizontal">
-                                <span class="status-pill st-proceso">En Proceso</span>
+                                <span class="status-pill st-produccion">En producción</span>
                                 <span class="status-pill st-completado">Completado</span>
                                 <span class="status-pill st-incompleto">Incompleto</span>
                             </div>
                         </div>
                         <div class="legend-col">
                             <h3>NOTAS</h3>
-                            <p class="notes-box" contenteditable="true"><br></p>
+                            <p class="notes-box" contenteditable="false"><br></p>
                         </div>
                     </div>
                 </div>
@@ -890,51 +897,51 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Lunes</td>
-                                <td contenteditable="true" data-label="Fecha">22/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Lunes</td>
+                                <td contenteditable="false" data-label="Fecha">24/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Martes</td>
-                                <td contenteditable="true" data-label="Fecha">23/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><span style="font-size: 15.2px;">Nueva Mimaki de corte. Presentación de la maquina</span></td>
-                                <td class="clickable-cell st-proceso" data-type="estado" data-label="Estado">En Proceso</td>
-                                <td class="clickable-cell p1" data-type="formato" data-label="Formato">Reel</td>
-                            </tr>
-                            <tr>
-                                <td contenteditable="true" data-label="Día">Miércoles</td>
-                                <td contenteditable="true" data-label="Fecha">24/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Martes</td>
+                                <td contenteditable="false" data-label="Fecha">25/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Jueves</td>
-                                <td contenteditable="true" data-label="Fecha">25/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque">Promo Stickers con tinta blanca y corte</td>
-                                <td class="clickable-cell st-proceso" data-type="estado" data-label="Estado">En Proceso</td>
-                                <td class="clickable-cell p1" data-type="formato" data-label="Formato">Reel</td>
-                            </tr>
-                            <tr>
-                                <td contenteditable="true" data-label="Día">Viernes</td>
-                                <td contenteditable="true" data-label="Fecha">26/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Miércoles</td>
+                                <td contenteditable="false" data-label="Fecha">26/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Sábado</td>
-                                <td contenteditable="true" data-label="Fecha">27/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Jueves</td>
+                                <td contenteditable="false" data-label="Fecha">27/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
                             <tr>
-                                <td contenteditable="true" data-label="Día">Domingo</td>
-                                <td contenteditable="true" data-label="Fecha">28/06</td>
-                                <td class="enfoque-cell" contenteditable="true" data-label="Enfoque"><br></td>
+                                <td contenteditable="false" data-label="Día">Viernes</td>
+                                <td contenteditable="false" data-label="Fecha">28/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
+                                <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
+                                <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="false" data-label="Día">Sábado</td>
+                                <td contenteditable="false" data-label="Fecha">29/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
+                                <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
+                                <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
+                            </tr>
+                            <tr>
+                                <td contenteditable="false" data-label="Día">Domingo</td>
+                                <td contenteditable="false" data-label="Fecha">30/08</td>
+                                <td class="enfoque-cell" contenteditable="false" data-label="Enfoque"><br></td>
                                 <td class="clickable-cell" data-type="estado" data-label="Estado"></td>
                                 <td class="clickable-cell" data-type="formato" data-label="Formato"></td>
                             </tr>
@@ -946,7 +953,7 @@
         </div>
     </div>
 
-    <div class="pagination-dots" style="transition: opacity 0.3s; opacity: 1;">
+    <div class="pagination-dots" style="transition: opacity 0.3s; opacity: 0;">
         <span class="dot active" onclick="goToSlide(0)"></span>
         <span class="dot" onclick="goToSlide(1)"></span>
         <span class="dot" onclick="goToSlide(2)"></span>
@@ -1092,7 +1099,7 @@
         window.addEventListener('mouseup', dragEnd);
         window.addEventListener('touchend', dragEnd);
 
-        /* INTERACCIÓN DE CELDAS POR DOBLE CLIC */
+        /* INTERACCIÓN DE CELDAS POR DOBLE CLIC - ACTUALIZADO */
         const clickCells = document.querySelectorAll('.calendar-table td.clickable-cell');
 
         clickCells.forEach(cell => {
@@ -1105,7 +1112,7 @@
 
                 if (cellType === 'estado') {
                     const estados = [
-                        { text: 'En Proceso', class: 'st-proceso' },
+                        { text: 'En producción', class: 'st-produccion' },
                         { text: 'Completado', class: 'st-completado' },
                         { text: 'Incompleto', class: 'st-incompleto' },
                         { text: '', class: '' }
@@ -1132,12 +1139,13 @@
                         { text: 'Historia', class: 'p2' },
                         { text: 'Carrucel', class: 'p4' },
                         { text: 'Motion', class: 'p5' },
+                        { text: 'Pauta', class: 'p6' },
                         { text: '', class: '' }
                     ];
 
                     let currentText = this.innerText.trim();
                     let currentIndex = formatos.findIndex(form => form.text === currentText);
-                    if (currentIndex === -1) currentIndex = 4;
+                    if (currentIndex === -1) currentIndex = 5;
 
                     let nextIndex = (currentIndex + 1) % formatos.length;
 
@@ -1240,5 +1248,5 @@
         });
     </script>
 
-
-</body></html>
+</body>
+</html>
